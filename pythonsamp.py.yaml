@@ -1,0 +1,15 @@
+# Sample yaml config file
+simpleoption: this is it
+listoption:
+ - one
+ - two
+dictlistoption:
+-   ipAddr: 192.168.1.10
+    description: phone
+    suppressCount: 0
+-   ipAddr: 192.168.1.11
+    description: pi
+    suppressCount: 2
+dictoption:
+   name: john doe
+   address: right here
