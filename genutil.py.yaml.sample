@@ -2,3 +2,9 @@
 sendEmail:
    gmailUsername: janedoeiot@gmail.com
    gmailPassword: DoeBuckle#99
+
+twitterAccount:
+   consumerKey: mykey
+   consumerSecret: mysecret
+   accessToken: my-access-token
+   accessTokenSecret: my-access-secret

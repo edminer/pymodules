@@ -24,6 +24,7 @@ from email import encoders
 # import socket for singleton lock
 import socket
 
+import twitter
 
 #------------------------------------------------------------------------------
 # CLASSES
@@ -252,6 +253,26 @@ def sendEmail(emailTo, subject, bodyText, bodyHtml=None, binaryFilepath=None, em
 
 
 #------------------------------------------------------------------------------
+# Function  : sendTwitterDirectMessage
+# Function  : Send an Twitter Direct Message with optional file attachment
+# Parms     : toTwitterName   Twitter Name of recepient
+#             messageText     Text of message to sent
+#             binaryFilepath  (optional) filepath of attachment
+# Returns   : nothing
+# Assumes   : yaml file has Twitter API info
+#------------------------------------------------------------------------------
+def sendTwitterDirectMessage(toTwitterName, messageText, binaryFilepath=None):
+   
+   api = twitter.Api(consumer_key=G_config["twitterAccount"]["consumerKey"],
+                     consumer_secret=G_config["twitterAccount"]["consumerSecret"],
+                     access_token_key=G_config["twitterAccount"]["accessToken"],
+                     access_token_secret=G_config["twitterAccount"]["accessTokenSecret"],
+                     sleep_on_rate_limit=True)
+   
+   api.PostDirectMessage(messageText, user_id=None, screen_name=toTwitterName)
+
+
+#------------------------------------------------------------------------------
 # Subroutine: exitWithErrorMessage
 # Function  : Print an appropriate error response to stdout/stderr and then exit
 # Parms     : message - a text message
@@ -283,6 +304,9 @@ if __name__ == "__main__":
 
    print("Starting...");
    print("Config items: %s" % str(G_config))
+
+   print("Sending Twitter DM...")
+   sendTwitterDirectMessage(sys.argv[1], "Hellooo there!")
 
    print("Sending a test email...")
    subject = 'This is a test email sent at %s!' % datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S")
