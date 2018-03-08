@@ -7,6 +7,7 @@
 #
 # Change History:
 #  em  03/26/2016  first written
+#  em  03/01/2018  added sendPushoverMessage
 #
 ###########################################################################
 #
@@ -273,6 +274,33 @@ def sendTwitterDirectMessage(toTwitterName, messageText, binaryFilepath=None):
 
 
 #------------------------------------------------------------------------------
+# Function  : sendPushoverMessage
+# Function  : Send an Pushover Message with optional file attachment
+# Parms     : poUserName      name of Pushover recepient
+#             messageText     Text of message to sent
+#             binaryFilepath  (optional) filepath of image file
+# Returns   : nothing
+# Assumes   : yaml file has Pushover API info
+#------------------------------------------------------------------------------
+def sendPushoverMessage(poUserName, messageText, binaryFilepath=None):
+   
+   import requests
+   
+   data = \
+      {
+        "token"  : G_config["pushover"]["apiToken"],
+        "user"   : G_config["pushover"]["users"][poUserName],
+        "message": messageText
+      }
+   if binaryFilepath:
+      files = { "attachment": ("image.jpg", open(binaryFilepath, "rb"), "image/jpeg") }
+   else:
+      files = None
+   
+   r = requests.post("https://api.pushover.net/1/messages.json", data, files=files)
+
+
+#------------------------------------------------------------------------------
 # Subroutine: exitWithErrorMessage
 # Function  : Print an appropriate error response to stdout/stderr and then exit
 # Parms     : message - a text message
@@ -304,6 +332,12 @@ if __name__ == "__main__":
 
    print("Starting...");
    print("Config items: %s" % str(G_config))
+
+   print("Sending Pushover...")
+   sendPushoverMessage("eminer", "Hellooo there!")
+   #sendPushoverMessage("eminer", "Hellooo there with a picture!", "/home/pi/tempd/greenfoot.jpg")
+   print("Done")
+   exit()
 
    print("Sending Twitter DM...")
    sendTwitterDirectMessage(sys.argv[1], "Hellooo there!")

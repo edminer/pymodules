@@ -8,3 +8,8 @@ twitterAccount:
    consumerSecret: mysecret
    accessToken: my-access-token
    accessTokenSecret: my-access-secret
+
+pushover:
+   apiToken: mytoken
+   users:
+      eminer: myuserkey
